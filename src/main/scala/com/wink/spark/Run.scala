@@ -12,7 +12,7 @@ object Run {
     val conf = new SparkConf().setAppName("Your App Name Here")
     val sc = new SparkContext(conf)
 
-    val a = sc.parallelize(0 to Long.MaxValue)
+    val a = sc.parallelize(1 to Int.MaxValue)
 
     println(a.count())
     println(a.map(x => x + 1).filter(x => x % 2 == 0).take(150).toList)
