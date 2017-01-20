@@ -3,7 +3,5 @@ services:
   spark-job:
     build: .
     command: sbt sparkSubmit
-    links:
-      - spark-master
     environment:
       - SPARK_MASTER_URL=spark://spark-master:7077
