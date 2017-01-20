@@ -1,6 +1,6 @@
 //please change these to reflect your project
 name := "spark-scala-docker"
-version := "1.0"
+version := "0.0.0"
 
 scalaVersion := "2.11.7"
 
