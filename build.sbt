@@ -13,6 +13,12 @@ libraryDependencies ++= Seq(
   "org.postgresql" % "postgresql" % "9.4.1212"
 )
 
+sparkSubmitJar := assembly.value.absolutePath
+
+sparkSubmitSparkArgs := Seq(
+  "--master", sys.env.getOrElse("SPARK_MASTER_URL", "spark://spark-master:7077")
+)
+
 //mergeStrategy is used by assembly to resolve conflicting classpaths
 // *NOTE* there may be differences in mergeStrategy for Spark 2.X and Spark 1.X, please keep that in mind
 assemblyMergeStrategy in assembly := {
@@ -30,5 +36,3 @@ assemblyMergeStrategy in assembly := {
     val oldStrategy = (assemblyMergeStrategy in assembly).value
     oldStrategy(x)
 }
-
-    
