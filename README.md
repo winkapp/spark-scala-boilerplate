@@ -4,7 +4,7 @@ Containerized Spark job optimized for scala - just drop your code in the src dir
 *TODO* use prebuilt jars rather than rebuilding the fat jars all the time
 
 ## Getting Started
-1. To get started, fork this boilerplate project: https://github.com/winkapp/spark-scala-docker
+1. To get started, fork this boilerplate project: https://github.com/winkapp/spark-scala-boilerplate
 1. Drop code in the `src/main/scala` folder
 1. Run `docker-compose run spark-job sbt sparkSubmit`
 
