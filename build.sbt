@@ -5,7 +5,10 @@ version := "0.0.0"
 scalaVersion := "2.11.7"
 
 //the provided tag tells assembly that this dep will be available on runtime jvm
-libraryDependencies += "org.apache.spark" %% "spark-core" % "2.1.0" % "provided"
+libraryDependencies ++= Seq(
+  "org.apache.spark" %% "spark-core" % "2.1.0" % "provided",
+  "org.apache.spark" %% "spark-sql" % "2.1.0" % "provided"
+)
 
 //add your library dependencies here
 libraryDependencies ++= Seq(
@@ -13,8 +16,16 @@ libraryDependencies ++= Seq(
   "org.postgresql" % "postgresql" % "9.4.1212"
 )
 
+//don't run tests in parallel - breaks spark test harness
+parallelExecution in Test := false
+
+//don't run sbt test during assembly
+test in assembly := {}
+
+//which jar to use for sparkSubmit: the assembled fat jar
 sparkSubmitJar := assembly.value.absolutePath
 
+//variables set during sparkSubmit
 sparkSubmitSparkArgs := Seq(
   "--master", sys.env.getOrElse("SPARK_MASTER_URL", "spark://spark-master:7077")
 )
