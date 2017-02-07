@@ -1,4 +1,3 @@
-#FROM winkapp/spark-standalone:2.1.0
 FROM openjdk:8
 
 # Install tools
@@ -15,21 +14,4 @@ RUN dpkg -i sbt-$SBT_VERSION.deb
 RUN wget https://downloads.typesafe.com/scala/$SCALA_VERSION/scala-$SCALA_VERSION.deb  
 RUN dpkg -i scala-$SCALA_VERSION.deb  
 # fetch base dependencies  
-RUN sbt compile  
-
-RUN mkdir /root/spark_job
-WORKDIR /root/spark_job
-
-# Add sbt config
-COPY project ./project
-COPY build.sbt ./build.sbt
-
-# Add src
-COPY src ./src
-
-#Run tests
-ONBUILD RUN sbt test
-
-#set entrypoint to use sbt sparkSubmit plugin
-#ENTRYPOINT ["/bin/bash"]
-#CMD ["sbt", "sparkSubmit"]
+RUN sbt compile
