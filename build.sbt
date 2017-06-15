@@ -4,6 +4,16 @@ version := "0.0.0"
 
 scalaVersion := "2.11.7"
 
+credentials += Credentials(baseDirectory.value / "bintray.creds")
+
+resolvers += "wink bintray" at "https://wink.bintray.com/wink-common"
+
+//wink dependencies
+libraryDependencies ++= Seq(
+  "com.wink" % "wink-common" % "1.0.31",
+  "com.eclipsesource.minimal-json" % "minimal-json" % "0.9.2"
+)
+
 //the provided tag tells assembly that this dep will be available on runtime jvm
 libraryDependencies ++= Seq(
   "org.apache.spark" %% "spark-core" % "2.1.0" % "provided",
@@ -27,7 +37,8 @@ sparkSubmitJar := assembly.value.absolutePath
 
 //variables set during sparkSubmit
 sparkSubmitSparkArgs := Seq(
-  "--master", sys.env.getOrElse("SPARK_MASTER_URL", "spark://spark-master:7077")
+  "--master", sys.env.getOrElse("SPARK_MASTER_URL", "spark://spark-master:7077"),
+  "--class", sys.env.getOrElse("SPARK_ENTRY_CLASS", "com.wink.spark.Run")
 )
 
 //mergeStrategy is used by assembly to resolve conflicting classpaths
