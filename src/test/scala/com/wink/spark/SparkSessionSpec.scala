@@ -1,7 +1,7 @@
 package com.wink.spark
 
 import org.apache.spark.SparkConf
-import org.apache.spark.sql.{SQLContext, SQLImplicits, SparkSession}
+import org.apache.spark.SparkContext
 import org.scalatest.{BeforeAndAfterAll, Suite}
 
 /**
@@ -14,11 +14,7 @@ import org.scalatest.{BeforeAndAfterAll, Suite}
 trait SparkSessionSpec extends BeforeAndAfterAll {
   this: Suite =>
 
-  private var _spark: SparkSession = _
-
-  protected object testImplicits extends SQLImplicits {
-    protected override def _sqlContext: SQLContext = _spark.sqlContext
-  }
+  private var _spark: SparkContext = _
 
   override def beforeAll(): Unit = {
     super.beforeAll()
@@ -27,7 +23,8 @@ trait SparkSessionSpec extends BeforeAndAfterAll {
       .setMaster("local[*]")
       .setAppName(this.getClass.getSimpleName)
 
-    _spark = SparkSession.builder().config(conf).getOrCreate()
+    _spark = SparkContext.getOrCreate(conf)
+
   }
 
   override def afterAll(): Unit = {
@@ -38,6 +35,6 @@ trait SparkSessionSpec extends BeforeAndAfterAll {
     super.afterAll()
   }
 
-  def spark: SparkSession = _spark
+  def spark: SparkContext = _spark
 
 }
