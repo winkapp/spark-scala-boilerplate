@@ -2,18 +2,22 @@
 name := "spark-scala-docker"
 version := "0.0.0"
 
-scalaVersion := "2.11.7"
+scalaVersion := "2.10.6"
 
 //the provided tag tells assembly that this dep will be available on runtime jvm
 libraryDependencies ++= Seq(
-  "org.apache.spark" %% "spark-core" % "2.1.0" % "provided",
-  "org.apache.spark" %% "spark-sql" % "2.1.0" % "provided"
+  "org.apache.spark" %% "spark-core" % "1.6.0" % "provided",
+  "org.apache.spark" %% "spark-sql" % "1.6.0" % "provided"
 )
 
 //add your library dependencies here
 libraryDependencies ++= Seq(
-  "org.apache.hadoop" % "hadoop-aws" % "2.7.3",
+  "org.apache.hadoop" % "hadoop-aws" % "2.7.3" excludeAll ExclusionRule(organization = "javax.servlet"),
   "org.postgresql" % "postgresql" % "9.4.1212"
+)
+
+libraryDependencies ++= Seq(
+  "org.scalatest" %% "scalatest" % "3.0.4" % "test"
 )
 
 //don't run tests in parallel - breaks spark test harness
@@ -27,7 +31,8 @@ sparkSubmitJar := assembly.value.absolutePath
 
 //variables set during sparkSubmit
 sparkSubmitSparkArgs := Seq(
-  "--master", sys.env.getOrElse("SPARK_MASTER_URL", "spark://spark-master:7077")
+  "--master", sys.env.getOrElse("SPARK_MASTER_URL", "spark://spark-master:7077"),
+  "--class", sys.env.getOrElse("SPARK_ENTRY_CLASS", "com.wink.spark.Run")
 )
 
 //mergeStrategy is used by assembly to resolve conflicting classpaths
